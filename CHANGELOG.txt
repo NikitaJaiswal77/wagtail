@@ -1,33 +1,122 @@
 Changelog
 =========
 
-6.3 (xx.xx.xxxx) - IN DEVELOPMENT
+6.4 (xx.xx.xxxx) - IN DEVELOPMENT
 ~~~~~~~~~~~~~~~~
 
+ * Add search terms report (Nvdm)
+ * Add the ability to apply basic Page QuerySet optimizations to `specific()` sub-queries using `select_related` & `prefetch_related` (Andy Babic)
+ * Increase `DATA_UPLOAD_MAX_NUMBER_FIELDS` in project template (Matt Westcott)
+ * Stop invalid Site hostname records from breaking preview (Matt Westcott)
+ * Set sensible defaults for InlinePanel heading and label (Matt Westcott)
+ * Limit tags autocompletion to 10 items to avoid performance issues with large number of matching tags (Aayushman Singh)
+ * Add the ability to restrict what types of requests a Pages supports via `allowed_http_methods` (Andy Babic)
+ * Fix: Improve handling of translations for bulk page action confirmation messages (Matt Westcott)
+ * Fix: Ensure custom rich text feature icons are correctly handled when provided as a list of SVG paths (Temidayo Azeez, Joel William, LB (Ben) Johnston)
+ * Fix: Ensure manual edits to `StreamField` values do not throw an error (Stefan Hammer)
+ * Fix: Fix sub-menus within the main menu cannot be closed on mobile (Bojan Mihelac)
+ * Fix: Fix animation overflow transition when navigating through subpages in the sidebar page explorer (manu)
+ * Fix: Ensure form builder supports custom admin form validation (John-Scott Atlakson, LB (Ben) Johnston)
+ * Fix: Ensure form builder correctly checks for duplicate field names when using a custom related name (John-Scott Atlakson, LB (Ben) Johnston)
+ * Fix: Normalize `StreamField.get_default()` to prevent creation forms from breaking (Matt Westcott)
+ * Fix: Prevent out-of-order migrations from skipping creation of image/document choose permissions (Matt Westcott)
+ * Fix: Use correct connections on multi-database setups in database search backends (Jake Howard)
+ * Fix: Ensure Cloudfront cache invalidation is called with a list, for compatibility with current botocore versions (Jake Howard)
+ * Docs: Move the model reference page from reference/pages to the references section as it covers all Wagtail core models (Srishti Jaiswal)
+ * Docs: Move the panels reference page from references/pages to the references section as panels are available for any model editing, merge panels API into this page (Srishti Jaiswal)
+ * Docs: Move the tags documentation to standalone advanced topic, instead of being inside the reference/pages section (Srishti Jaiswal)
+ * Docs: Refine the adding reports page so that common (page/non-page) class references are at the top and the full page only example has correct heading nesting (Alessandro Chitarrini)
+ * Docs: Add the `wagtail start` command to the management commands reference page (Damilola Oladele)
+ * Docs: Refine the project template page sections and document common issues encountered when creating custom templates (Damilola Oladele)
+ * Docs: Refine titles, references and URLS to better align with the documentation style guide, including US spelling (Srishti Jaiswal)
+ * Docs: Recommend a larger `DATA_UPLOAD_MAX_NUMBER_FIELDS` when integrating Wagtail into Django (Matt Westcott)
+ * Docs: Improve code highlighting and formatting for Python docstrings in core models (Srishti Jaiswal)
+ * Docs: Update all JavaScript inline scripts & some CSS inline style tags to a CSP compliant approach by using external scripts/styles (Aayushman Singh)
+ * Docs: Update usage of `mark_safe` to `format_html` for any script inclusions, to better avoid XSS issues from example code (Aayushman Singh)
+ * Docs: Update documentation writing guidelines to encourage better considerations of security, accessibility and good practice when writing code examples (Aayushman Singh, LB (Ben) Johnston)
+ * Docs: Update documentation guidelines on writing links and API reference (Sage Abdullah)
+ * Docs: Replace absolute URLs with intersphinx links where possible to avoid broken links (Sage Abdullah)
+ * Docs: Update upgrading guide and release process to better reflect the current practices (Sage Abdullah)
+ * Docs: Document usage of custom validation for admin form pages when using `AbstractEmailForm` or `AbstractForm` pages (John-Scott Atlakson, LB (Ben) Johnston)
+ * Docs: Reword `BlogTagIndexPage` example for clarity (Clifford Gama)
+ * Docs: Change title of blog index page in tutorial to avoid slug issues (Thibaud Colas)
+ * Docs: Fix `wagtailcache` and `wagtailpagecache` examples to not use quotes for the `fragment_name` (Shiv)
+ * Docs: Update tutorial to reflect the move of the "Add child page" action to a top-level button in the header as a '+' icon (Clifford Gama)
+ * Docs: Fix link to `HTTPMethod` in `Page.handle_options_request()` docs (Sage Abdullah)
+ * Docs: Improve the Pages Theory page with added & more consistent section headings and admonitions to aid in readability (Clifford Gama)
+ * Maintenance: Close open files when reading within utils/setup.py (Ataf Fazledin Ahamed)
+ * Maintenance: Avoid redundant `ALLOWED_HOSTS` check in `Site.find_for_request` (Jake Howard)
+ * Maintenance: Update `CloneController` to ensure that `added`/`cleared` events are not dispatched as cancelable (LB (Ben) Johnston)
+ * Maintenance: Remove unused `uuid` UMD module as all code is now using the NPM module (LB (Ben) Johnston)
+ * Maintenance: Clean up JS comments throughout codebase to be aligned to JSDoc where practical (LB (Ben) Johnston)
+ * Maintenance: Replace `eslint-disable no-undef` linter directives with `global` comments (LB (Ben) Johnston)
+ * Maintenance: Upgrade Node tooling to active LTS version 22 (LB (Ben) Johnston)
+ * Maintenance: Remove defunct oEmbed providers (Rahul Samant)
+ * Maintenance: Remove obsolete non-upsert-based code for Postgres search indexing (Jake Howard)
+ * Maintenance: Remove unused Rangy JS library (LB (Ben) Johnston)
+ * Maintenance: Update `PreviewController` usage to leverage Stimulus actions instead of calling `preventDefault` manually (Ayaan Qadri)
+ * Maintenance: Various performance optimizations to page publishing (Jake Howard)
+ * Maintenance: Remove unnecessary DOM canvas.toBlob polyfill (LB (Ben) Johnston)
+ * Maintenance: Ensure Storybook core files are correctly running through Eslint (LB (Ben) Johnston)
+ * Maintenance: Add a new Stimulus `ZoneController` (`w-zone`) to support dynamic class name changes & event handling on container elements (Ayaan Qadri)
+ * Maintenance: Migrate jQuery class toggling & drag/drop event handling within the multiple upload views to the Stimulus ZoneController usage (Ayaan Qadri)
+ * Maintenance: Test project template for warnings when run against Django pre-release versions (Sage Abdullah)
+ * Maintenance: Refactor redirects create/delete views to use generic views (Sage Abdullah)
+ * Maintenance: Add JSDoc description, adopt linting recommendations, and add more unit tests for `ModalWorkflow` (LB (Ben) Johnston)
+
+
+6.3.2 (xx.xx.xxxx) - IN DEVELOPMENT
+~~~~~~~~~~~~~~~~~~
+
+ * Fix: Ensure Cloudfront cache invalidation is called with a list, for compatibility with current botocore versions (Jake Howard)
+ * Docs: Update tutorial to reflect the move of the "Add child page" action to a top-level button in the header as a '+' icon (Clifford Gama)
+
+
+6.3.1 (19.11.2024)
+~~~~~~~~~~~~~~~~~~
+
+ * Fix: Restore ability to upload profile picture through account settings (Sage Abdullah)
+ * Fix: Correctly handle `ImageChooserBlock` to `ImageBlock` data conversions where all inputs to `bulk_to_python` are null (Storm Heg, Matt Westcott)
+ * Fix: Improve spacing of page / collection permissions table in Group settings (Sage Abdullah)
+ * Fix: Remove forced capitalization of site name on admin dashboard (Thibaud Colas)
+ * Docs: Reword `BlogTagIndexPage` example for clarity (Clifford Gama)
+ * Docs: Change title of blog index page in tutorial to avoid slug issues (Thibaud Colas)
+ * Docs: Fix `wagtailcache` and `wagtailpagecache` examples to not use quotes for the `fragment_name` (Shiv)
+ * Docs: Lower search result ranking for release notes on readthedocs search (Sage Abdullah)
+
+
+6.3 LTS (01.11.2024)
+~~~~~~~~~~~~~~~~~~~~
+
+ * Add support for Python 3.13 (Matt Westcott)
  * Add formal support for Django 5.1 (Matt Westcott)
- * Formalize support for MariaDB (Sage Abdullah, Daniel Black)
- * Redirect to the last viewed listing page after deleting form submissions (Matthias Brück)
- * Provide `getTextLabel` method on date / time StreamField blocks (Vaughn Dickson)
- * Purge frontend cache when modifying redirects (Jake Howard)
+ * Add `ImageBlock` with alt text support (Chiemezuo Akujobi for Google Summer of Code, mentored by Storm Heg, Saptak Sengupta, Thibaud Colas and Matt Westcott)
+ * Implement incremental dashboard design enhancements (Albina Starykova, Ben Enright)
+ * Add a new enhanced contrast admin theming option for the admin interface (Albina Starykova, Victoria Ottah)
  * Migrate workflow history views to universal listings (Sage Abdullah)
  * Refactor documents views to use universal designs (Sage Abdullah)
  * Refactor images views to use universal designs (Sage Abdullah)
  * Implement universal listings for workflow usage and page type usage views (Sage Abdullah)
  * Add search and filters to form pages listing (Sage Abdullah)
+ * Add support for uploading HEIC / HEIF images (Matt Westcott)
+ * Allow customization of preview device sizes in the live preview panel (Bart Cieliński, alexkiro, Sage Abdullah)
+ * Formalize support for MariaDB (Sage Abdullah, Daniel Black)
+ * Redirect to the last viewed listing page after deleting form submissions (Matthias Brück)
+ * Provide `getTextLabel` method on date / time StreamField blocks (Vaughn Dickson)
+ * Purge frontend cache when modifying redirects (Jake Howard)
  * Deprecate the `WAGTAIL_AUTO_UPDATE_PREVIEW` setting, use `WAGTAIL_AUTO_UPDATE_PREVIEW_INTERVAL = 0` instead (Sage Abdullah)
  * Consistently use `capfirst` for title-casing model verbose names (Sébastien Corbin)
- * Add support for Python 3.13 (Matt Westcott)
  * Fire `copy_for_translation_done` signal when copying translatable models as well as pages (Coen van der Kamp)
  * Add support for an image `description` field across all images, to better support accessible image descriptions (Chiemezuo Akujobi)
  * Prompt the user about unsaved changes when editing snippets (Sage Abdullah)
- * Implement incremental dashboard design enhancements (Albina Starykova, Ben Enright)
+ * Make dashboard upgrade banners dismissible (Sage Abdullah)
  * Add support for specifying different preview modes to the "View draft" URL for pages (Robin Varghese)
- * Add a new enhanced contrast admin theming option for the admin interface (Albina Starykova, Victoria Ottah)
  * Implement new designs for the footer actions dropdown with more contrast and larger text (Sage Abdullah)
  * All create/edit admin forms now use a sticky submit button, for consistency and to speed up edits (Sage Abdullah)
  * Secondary form actions such as "Delete" are now in the header actions menu (Sage Abdullah)
- * Add support for uploading HEIC / HEIF images (Matt Westcott)
- * Allow customization of preview device sizes in the live preview panel (Bart Cieliński, alexkiro, Sage Abdullah)
+ * Allow setting page privacy rules when a restriction already exists on an ancestor page (Bojan Mihelac)
+ * Automatically create links when pasting content that contain URLs into a rich text input (Thibaud Colas)
+ * Add Uyghur language support
  * Fix: Prevent page type business rules from blocking reordering of pages (Andy Babic, Sage Abdullah)
  * Fix: Improve layout of object permissions table (Sage Abdullah)
  * Fix: Fix typo in aria-label attribute of page explorer navigation link (Sébastien Corbin)
@@ -43,19 +132,28 @@ Changelog
  * Fix: Fix content path links in usage view to scroll to the correct element (Sage Abdullah)
  * Fix: Always show the minimap toggle button (Albina Starykova)
  * Fix: Ensure that dropdown button toggles show with a border in high contrast mode (Ishwari8104, LB (Ben) Johnston)
- * Fix: Update email notification header to the new logo design (rahulsamant37)
+ * Fix: Update email notification header to the new logo design (Rahul Samant)
  * Fix: Change `file_size` field on document model to avoid artificial 2Gb limit (Gabriel Getzie)
  * Fix: Ensure that `TypedTableBlock` uses the correct API representations of child blocks (Matt Westcott)
  * Fix: Footer action buttons now include their `media` definitions (Sage Abdullah)
  * Fix: Improve the text contrast of the bulk actions "Select all" button (Sage Abdullah)
  * Fix: Fix error on workflow settings view with multiple snippet types assigned to the same workflow on Postgres (Sage Abdullah)
+ * Fix: Fix datetime fields overflowing its parent wrapper in listing filters (Rohit Singh)
+ * Fix: Prevent multiple URLs from being combined into one when pasting links into a rich text input (Thibaud Colas)
+ * Fix: Improve layout of report listing tables (Sage Abdullah)
+ * Fix: Fix regression from creation of `AbstractGroupApprovalTask` to ensure `can_handle` checks for the abstract class correctly (Sumana Sree Angajala)
  * Docs: Upgrade Sphinx to 7.3 (Matt Westcott)
+ * Docs: Upgrade sphinx-wagtail-theme to v6.4.0, with a new search integration and Read the Docs Addons bug fixes (Thibaud Colas)
  * Docs: Document how to customize date/time format settings (Vince Salvino)
  * Docs: Create a new documentation section for deployment and move fly.io deployment from the tutorial to this section (Vince Salvino)
  * Docs: Clarify process for UserViewSet customization (Sage Abdullah)
  * Docs: Correct `WAGTAIL_WORKFLOW_REQUIRE_REAPPROVAL_ON_EDIT` documentation to state that it defaults to `False` (Matt Westcott)
  * Docs: Add an example of customizing a default accessibility check (Cynthia Kiser)
  * Docs: Demonstrate access protection with `TokenAuthentication` in the Wagtail API v2 Configuration Guide (Krzysztof Jeziorny)
+ * Docs: Replace X links with Mastodon in the README (Alex Morega)
+ * Docs: Re-enable building offline formats in online documentation (Read the docs) for EPUB/PDF/HTML downloads (Joel William, Sage Abdullah)
+ * Docs: Resolve multiple output errors in the documentation ePub format (Sage Abdullah)
+ * Docs: Update social media examples to use LinkedIn, Reddit, Facebook (Ayaan Qadri)
  * Maintenance: Removed support for Python 3.8 (Matt Westcott)
  * Maintenance: Drop pytz dependency in favour of `zoneinfo.available_timezones` (Sage Abdullah)
  * Maintenance: Relax django-taggit dependency to allow 6.0 (Matt Westcott)
@@ -78,6 +176,16 @@ Changelog
  * Maintenance: Remove `image_format_name_to_content_type` helper function that duplicates Willow functionality (Matt Westcott)
  * Maintenance: Improve code reuse for footer actions markup across generic views (Sage Abdullah)
  * Maintenance: Deprecate internal `DeleteMenuItem` API for footer actions (Sage Abdullah)
+ * Maintenance: Update Pillow dependency to allow 11.x (Storm Heg)
+
+
+6.2.3 (01.11.2024)
+~~~~~~~~~~~~~~~~~~
+
+ * Fix: Prevent multiple URLs from being combined into one when pasting links into a rich text input (Thibaud Colas)
+ * Fix: Fix error on workflow settings view with multiple snippet types assigned to the same workflow on Postgres (Sage Abdullah)
+ * Fix: Prevent history view from breaking if a log entry's revision is missing (Matt Westcott)
+ * Docs: Upgrade sphinx-wagtail-theme to v6.4.0, with a new search integration and Read the Docs Addons bug fixes (Thibaud Colas)
 
 
 6.2.2 (24.09.2024)
@@ -533,6 +641,13 @@ Changelog
  * Maintenance: Use Django's `FileResponse` when serving files such as Images or Documents (Jake Howard)
  * Maintenance: Deprecated `WidgetWithScript` base widget class (LB (Ben) Johnston)
  * Maintenance: Remove support for Django 4.1 and below (Sage Abdullah)
+
+
+5.2.7 (01.11.2024)
+~~~~~~~~~~~~~~~~~~
+
+ * Fix: Prevent multiple URLs from being combined into one when pasting links into a rich text input (Thibaud Colas)
+ * Fix: Fix error on workflow settings view with multiple snippet types assigned to the same workflow on Postgres (Sage Abdullah)
 
 
 5.2.6 (11.07.2024)
@@ -4091,7 +4206,7 @@ Changelog
  * Fix: Fixed TypeError when getting embed HTML with oembed on Python 3 (John-Scott Atlakson)
  * Fix: Made HTML whitelisting in rich text fields more robust at catching disallowed URL schemes such as "jav\tascript:" (Tim Heap)
  * Fix: created_at timestamps on page revisions were not being preserved on page copy, causing revisions to get out of sequence
- * Fix: When copying pages recursively, revisions of sub-pages were being copied regardless of the copy_revisions flag
+ * Fix: When copying pages recursively, revisions of subpages were being copied regardless of the copy_revisions flag
  * Fix: Updated the migration dependencies within the project template to ensure that Wagtail's own migrations consistently apply first.
  * Fix: The cache of site root paths is now cleared when a site is deleted.
  * Fix: Search indexing now prevents pages from being indexed multiple times, as both the base Page model and the specific subclass

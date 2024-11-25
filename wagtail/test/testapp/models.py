@@ -44,7 +44,8 @@ from wagtail.blocks import (
     StreamBlock,
     StructBlock,
 )
-from wagtail.contrib.forms.forms import FormBuilder
+from wagtail.compat import HTTPMethod
+from wagtail.contrib.forms.forms import FormBuilder, WagtailAdminFormPageForm
 from wagtail.contrib.forms.models import (
     FORM_FIELD_CHOICES,
     AbstractEmailForm,
@@ -65,7 +66,7 @@ from wagtail.documents.blocks import DocumentChooserBlock
 from wagtail.documents.models import AbstractDocument, Document
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model
-from wagtail.images.blocks import ImageChooserBlock
+from wagtail.images.blocks import ImageBlock, ImageChooserBlock
 from wagtail.images.models import AbstractImage, AbstractRendition, Image
 from wagtail.models import (
     DraftStateMixin,
@@ -434,7 +435,7 @@ class EventPage(Page):
         FieldPanel("body"),
         InlinePanel(
             "speakers",
-            label="Speakers",
+            label="Speaker",
             heading="Speaker lineup",
             help_text="Put the keynote speaker first",
         ),
@@ -526,6 +527,9 @@ class EventSitemap(Sitemap):
 class EventIndex(Page):
     intro = RichTextField(blank=True, max_length=50)
     ajax_template = "tests/includes/event_listing.html"
+
+    # NOTE: Using a mix of enum and string values to test handling of both
+    allowed_http_methods = [HTTPMethod.GET, "OPTIONS"]
 
     def get_events(self):
         return self.get_children().live().type(EventPage)
@@ -715,17 +719,36 @@ class FormPageWithRedirect(AbstractEmailForm):
 # FormPage with a custom FormSubmission
 
 
+class FormPageWithCustomSubmissionForm(WagtailAdminFormPageForm):
+    """
+    Used to validate that admin forms can validate the page's submissions via
+    extending the form class.
+    """
+
+    def clean(self):
+        cleaned_data = super().clean()
+        from_address = cleaned_data.get("from_address")
+        if from_address and "example.com" in from_address:
+            raise ValidationError("Email cannot be from example.com")
+
+        return cleaned_data
+
+
 class FormPageWithCustomSubmission(AbstractEmailForm):
     """
-    This Form page:
-        * Have custom submission model
-        * Have custom related_name (see `FormFieldWithCustomSubmission.page`)
-        * Saves reference to a user
-        * Doesn't render html form, if submission for current user is present
+    A ``FormPage`` with a custom FormSubmission and other extensive customizations:
+
+    * A custom submission model
+    * A custom related_name (see `FormFieldWithCustomSubmission.page`)
+    * Saves reference to a user
+    * Doesn't render html form, if submission for current user is present
+    * A custom clean method that does not allow the ``from_address`` to be set to anything including example.com
     """
 
     intro = RichTextField(blank=True)
     thank_you_text = RichTextField(blank=True)
+
+    base_form_class = FormPageWithCustomSubmissionForm
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request)
@@ -1646,6 +1669,7 @@ class StreamPage(Page):
                 "title_list",
                 ListBlock(CharBlock()),
             ),
+            ("image_with_alt", ImageBlock()),
         ],
     )
 
@@ -2339,7 +2363,9 @@ class ModelWithNullableParentalKey(models.Model):
 
 class GalleryPage(Page):
     content_panels = Page.content_panels + [
-        MultipleChooserPanel("gallery_images", chooser_field_name="image")
+        MultipleChooserPanel(
+            "gallery_images", heading="Gallery images", chooser_field_name="image"
+        )
     ]
 
 

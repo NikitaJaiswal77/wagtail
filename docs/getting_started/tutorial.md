@@ -31,7 +31,7 @@ If none of the preceding commands return a version number, or return a version l
 ### Create and activate a virtual environment
 
 This tutorial recommends using a virtual environment, which isolates installed dependencies from other projects.
-This tutorial uses [`venv`](https://docs.python.org/3/tutorial/venv.html), which is packaged with Python 3. On Ubuntu, it may be necessary to run `sudo apt install python3-venv` to install it.
+This tutorial uses [`venv`](inv:python#tutorial/venv), which is packaged with Python 3. On Ubuntu, it may be necessary to run `sudo apt install python3-venv` to install it.
 
 **On Windows** (cmd.exe), run the following commands:
 
@@ -55,7 +55,7 @@ python -m venv mysite/env
 source mysite/env/bin/activate
 ```
 
-**For other shells** see the [`venv` documentation](https://docs.python.org/3/library/venv.html).
+**For other shells** see the [`venv` documentation](inv:python#tutorial/venv).
 
 ```{note}
 If you're using version control such as git, then `mysite` is the directory for your project.
@@ -164,7 +164,7 @@ class HomePage(Page):
 ```
 
 `body` is a `RichTextField`, a special Wagtail field. When `blank=True`,
-it means the field isn't mandatory and you can leave it empty. You can use any of the [Django core fields](https://docs.djangoproject.com/en/stable/ref/models/fields). `content_panels` define the capabilities and the layout of the editing interface. Adding fields to `content_panels` enables you to edit them in the Wagtail [admin interface](https://guide.wagtail.org/en-latest/concepts/wagtail-interfaces/#admin-interface). You can read more about this on [Page models](../topics/pages).
+it means the field isn't mandatory and you can leave it empty. You can use any of the [Django core fields](inv:django#ref/models/fields). `content_panels` define the capabilities and the layout of the editing interface. Adding fields to `content_panels` enables you to edit them in the Wagtail [admin interface](https://guide.wagtail.org/en-latest/concepts/wagtail-interfaces/#admin-interface). You can read more about this on [Page models](../topics/pages).
 
 Run:
 
@@ -199,7 +199,7 @@ to the model. Wagtail uses normal Django templates to render each page
 type. By default, it looks for a template filename formed from the app and model name,
 separating capital letters with underscores. For example, `HomePage` within the "home" app becomes
 `home/home_page.html`. This template file can exist in any location that
-[Django's template rules](https://docs.djangoproject.com/en/stable/intro/tutorial03/#write-views-that-actually-do-something) recognize. Conventionally, you can place it within a `templates` folder within the app.
+[Django's template rules](<inv:django#intro/tutorial03:write views that actually do something>) recognize. Conventionally, you can place it within a `templates` folder within the app.
 
 Edit `home/templates/home/home_page.html` to contain the following:
 
@@ -342,9 +342,9 @@ Now that this is complete, here is how you can create a page from the Wagtail [a
 
 1.  Go to <http://127.0.0.1:8000/admin> and sign in with your admin user details.
 2.  In the Wagtail [admin interface](https://guide.wagtail.org/en-latest/concepts/wagtail-interfaces/#admin-interface), go to Pages, then click Home.
-3.  Add a child page to the Home page by clicking **...** at the top of the screen and selecting the option **Add child page**.
+3.  Add a child page to the Home page by clicking the **`+`** icon (Add child page) at the top of the screen.
 4.  Choose **Blog index page** from the list of the page types.
-5.  Use "Our Blog" as your page title, make sure it has the slug "blog" on the Promote tab, and publish it.
+5.  Use "Blog" as your page title, make sure it has the slug "blog" on the Promote tab, and publish it.
 
 You can now access the URL, <http://127.0.0.1:8000/blog> on your site. Note how the slug from the Promote tab defines the page URL.
 
@@ -415,7 +415,7 @@ URL of the blog this post is a part of.
 Now, go to your [admin interface](https://guide.wagtail.org/en-latest/concepts/wagtail-interfaces/#admin-interface) and create a few blog posts as children of `BlogIndexPage` by following these steps:
 
 1.  Click **Pages** from the Wagtail [Sidebar](https://guide.wagtail.org/en-latest/how-to-guides/find-your-way-around/#the-sidebar), and then click **Home**
-2.  Hover on **Our blog** and click **Add child page**.
+2.  Hover on **Blog** and click **Add child page**.
 
 ![Page listing for Home page with the "Add Child Page" button highlighted in red](../_static/images/tutorial/tutorial_4a.png)
 
@@ -442,7 +442,7 @@ Publish each blog post when you are done editing.
 Congratulations! You now have the beginnings of a working blog. If you go to
 <http://127.0.0.1:8000/blog> in your browser, you can see all the posts that you created by following the preceding steps:
 
-![Basic "Our blog" page with three blogs listed, with their title, content](../_static/images/tutorial/tutorial_7.png)
+![Basic blog index page with three blogs listed, with their title, content](../_static/images/tutorial/tutorial_7.png)
 
 Titles should link to post pages, and a link back to the blog's homepage should appear in the footer of each post page.
 
@@ -502,10 +502,10 @@ For more information, see [Page QuerySet reference](../reference/pages/queryset_
 
 ### Overriding Context
 
-With a keen eye, you may have noticed problems with the `Our blog` page:
+With a keen eye, you may have noticed problems with the blog index page:
 
-1.  `Our blog` orders posts in chronological order. Generally blogs display content in _reverse_ chronological order.
-2.  `Our blog` displays all content. You want to make sure that it displays only _published_ content.
+1.  Posts are in chronological order. Generally blogs display content in _reverse_ chronological order.
+2.  Posts drafts are visible. You want to make sure that it displays only _published_ content.
 
 To accomplish these, you need to do more than grab the index
 page's children in the template. Instead, you want to modify the
@@ -921,10 +921,10 @@ class BlogTagIndexPage(Page):
 Note that this Page-based model defines no fields of its own.
 Even without fields, subclassing `Page` makes it a part of the
 Wagtail ecosystem, so that you can give it a title and URL in the
-admin, and so that you can manipulate its contents by returning
-a QuerySet from its `get_context()` method.
+admin. You can also override its `get_context()` method to add a
+QuerySet to the context dictionary, making it available to the template.
 
-Migrate this by running `python manage.py makemigrations` and then `python manage.py migrate`. After migrating the new changes, create a new `BlogTagIndexPage` in the admin interface. To create the `BlogTagIndexPage`, follow the same process you followed in creating the `BlogIndexPage` and give it the slug "tags" on the Promote tab. This means the `BlogTagIndexPage` is a child of the home page and parallel to `Our Blog` in the admin interface.
+Migrate this by running `python manage.py makemigrations` and then `python manage.py migrate`. After migrating the new changes, create a new `BlogTagIndexPage` in the admin interface. To create the `BlogTagIndexPage`, follow the same process you followed in creating the `BlogIndexPage` and give it the slug "tags" on the Promote tab. This means the `BlogTagIndexPage` is a child of the home page and parallel to `Blog` in the admin interface.
 
 Access `/tags` and Django will tell you what you probably already knew.
 You need to create the template, `blog/templates/blog/blog_tag_index_page.html` and add the following content to it:

@@ -1,10 +1,10 @@
-# Model Reference
+# Model reference
 
 ```{eval-rst}
-.. automodule:: wagtail.models
+.. module:: wagtail.models
 ```
 
-This document contains reference information for the model classes inside the `wagtailcore` module.
+This document contains reference information for the model classes inside the `wagtail.models` module.
 
 (page_model_ref)=
 
@@ -143,7 +143,7 @@ This document contains reference information for the model classes inside the `w
         A UUID that is shared between translations of a page. These are randomly generated
         when a new page is created and copied when a translation of a page is made.
 
-        A translation_key value can only be used on one page in each locale.
+        A ``translation_key`` value can only be used on one page in each locale.
 ```
 
 ### Methods and properties
@@ -151,7 +151,7 @@ This document contains reference information for the model classes inside the `w
 In addition to the model fields provided, `Page` has many properties and methods that you may wish to reference, use, or override in creating your own models.
 
 ```{note}
-See also [django-treebeard](https://django-treebeard.readthedocs.io/en/latest/index.html)'s [node API](https://django-treebeard.readthedocs.io/en/latest/api.html). ``Page`` is a subclass of [materialized path tree](https://django-treebeard.readthedocs.io/en/latest/mp_tree.html) nodes.
+See also [django-treebeard](inv:treebeard:std:doc#index)'s [node API](inv:treebeard:std:doc#api). ``Page`` is a subclass of [materialized path tree](inv:treebeard:std:doc#mp_tree) nodes.
 ```
 
 ```{eval-rst}
@@ -199,6 +199,28 @@ See also [django-treebeard](https://django-treebeard.readthedocs.io/en/latest/in
     .. automethod:: get_template
 
     .. automethod:: get_admin_display_title
+
+    .. autoattribute:: allowed_http_methods
+
+        When customizing this attribute, developers are encouraged to use values from Python's built-in ``http.HTTPMethod`` enum in the list, as it is more robust, and makes use of values that already exist in memory. For example:
+
+        .. code-block:: python
+
+            from http import HTTPMethod
+
+            class MyPage(Page):
+                allowed_http_methods = [HTTPMethod.GET, HTTPMethod.OPTIONS]
+
+        The ``http.HTTPMethod`` enum wasn't added until Python 3.11, so if your project uses an older version of Python, you can use uppercase strings instead. For example:
+
+        .. code-block:: python
+
+            class MyPage(Page):
+                allowed_http_methods = ["GET", "OPTIONS"]
+
+    .. automethod:: check_request_method
+
+    .. automethod:: handle_options_request
 
     .. autoattribute:: preview_modes
 
@@ -361,7 +383,7 @@ See also [django-treebeard](https://django-treebeard.readthedocs.io/en/latest/in
     .. attribute:: exclude_fields_in_copy
 
         An array of field names that will not be included when a Page is copied.
-        Useful when you have relations that do not use `ClusterableModel` or should not be copied.
+        Useful when you have relations that do not use ``ClusterableModel`` or should not be copied.
 
         .. code-block:: python
 
@@ -931,7 +953,7 @@ Workflows represent sequences of tasks that must be approved for an action to be
 
         (boolean)
 
-        Whether or not the workflow is active: active workflows can be added to pages and snippets, and started. Inactive workflows cannot.
+        Whether or not the workflow is active. Active workflows can be added to pages and snippets, and started. Inactive workflows cannot.
 ```
 
 ### Methods and properties
@@ -986,7 +1008,7 @@ Workflow states represent the status of a started workflow on an object.
 
         (foreign key to ``Workflow``)
 
-        The workflow whose state the ``WorkflowState`` represents
+        The workflow whose state the ``WorkflowState`` represents.
 
     .. attribute:: status
 

@@ -331,7 +331,7 @@ if the page supports [multiple preview modes](wagtail.models.Page.preview_modes)
 
 ## Template fragment caching
 
-Django supports [template fragment caching](https://docs.djangoproject.com/en/stable/topics/cache/#template-fragment-caching), which allows caching portions of a template. Using Django's `{% cache %}` tag natively with Wagtail can be [dangerous](https://github.com/wagtail/wagtail/issues/5074) as it can result in preview content being shown to end users. Instead, Wagtail provides 2 extra template tags which can be loaded from `wagtail_cache`:
+Django supports [template fragment caching](<inv:django:std:label#topics/cache:template fragment caching>), which allows caching portions of a template. Using Django's `{% cache %}` tag natively with Wagtail can be [dangerous](https://github.com/wagtail/wagtail/issues/5074) as it can result in preview content being shown to end users. Instead, Wagtail provides 2 extra template tags which can be loaded from `wagtail_cache`:
 
 (wagtailcache)=
 
@@ -342,7 +342,7 @@ The `{% wagtailcache %}` tag functions similarly to Django's `{% cache %}` tag, 
 ```html+django
 {% load wagtail_cache %}
 
-{% wagtailcache 500 "sidebar" %}
+{% wagtailcache 500 sidebar %}
     <!-- sidebar -->
 {% endwagtailcache %}
 ```
@@ -358,7 +358,7 @@ Much like `{% cache %}`, you can use [`make_template_fragment_key`](django.core.
 ```html+django
 {% load wagtail_cache %}
 
-{% wagtailpagecache 500 "hero" %}
+{% wagtailpagecache 500 hero %}
     <!-- hero -->
 {% endwagtailpagecache %}
 ```
@@ -368,7 +368,7 @@ This is identical to:
 ```html+django
 {% wagtail_site as current_site %}
 
-{% wagtailcache 500 "hero" page.cache_key current_site.id %}
+{% wagtailcache 500 hero page.cache_key current_site.id %}
     <!-- hero -->
 {% endwagtailcache %}
 ```
